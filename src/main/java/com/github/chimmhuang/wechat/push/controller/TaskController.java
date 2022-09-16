@@ -3,6 +3,7 @@ package com.github.chimmhuang.wechat.push.controller;
 import cn.hutool.json.JSONUtil;
 import com.github.chimmhuang.wechat.push.cache.WechatCacheClient;
 import com.github.chimmhuang.wechat.push.config.WechatProperties;
+import com.github.chimmhuang.wechat.push.dto.AccessTokenRespDTO;
 import com.github.chimmhuang.wechat.push.dto.SendTemplateMsgDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,8 +58,15 @@ public class TaskController {
      */
     @GetMapping("/template/send")
     public void pushTemplateMsg() {
+        // 获取 access_token
+        AccessTokenRespDTO accessToken = wechatCacheClient.getAccessToken();
+        if (accessToken == null) {
+            log.error("未获取到 access_token");
+            return;
+        }
+
         // 获取模板推送地址
-        String tmplmsgUrl = String.format(wechatProperties.getTmplmsgUrl(), wechatCacheClient.getAccessToken());
+        String tmplmsgUrl = String.format(wechatProperties.getTmplmsgUrl(), accessToken.getAccess_token());
 
         // 组装内容
         Map<String, SendTemplateMsgDTO.DataValue> dataMap = new HashMap<>();

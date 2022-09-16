@@ -31,10 +31,6 @@ public class CaffeineCacheConfig {
                 .expireAfterWrite(7200, TimeUnit.SECONDS)
                 // 提前 1分钟 刷新 token
                 .refreshAfterWrite(119, TimeUnit.MINUTES)
-                // 弱引用key
-                .weakKeys()
-                // 弱引用value
-                .weakValues()
                 // 记录下缓存的一些统计数据，例如命中率等
                 .recordStats()
                 // 剔除监听

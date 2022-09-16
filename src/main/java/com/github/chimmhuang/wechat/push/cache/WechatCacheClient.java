@@ -31,7 +31,7 @@ public class WechatCacheClient {
      */
     public void setAccessToken(AccessTokenRespDTO accessTokenRespDTO) {
         wechatTokenCache.put(ACCESS_TOKEN_KEY, JSONUtil.toJsonStr(accessTokenRespDTO));
-        log.info("已将 access_token 放入缓存");
+        log.info("已将 access_token 放入缓存");//BoundedLocalCache$BoundedLocalLoadingCache@2921a36a 7210
     }
 
 
