@@ -19,7 +19,7 @@ public class CaffeineTest {
                 // 表示自从最后一次写入后多久就会过期
                 .expireAfterWrite(5, TimeUnit.SECONDS)
                 //表示自从最后一次访问（写入或者读取）后多久就会过期；
-                .expireAfterAccess(5, TimeUnit.SECONDS)
+//                .expireAfterAccess(5, TimeUnit.SECONDS)
                 //自定义过期策略
                 //.expireAfter()
                 //指定刷新策略
@@ -43,6 +43,20 @@ public class CaffeineTest {
                 });
 
         cache1.put("username","chimmhuang");
+        for (int thread = 0; thread < 3; thread++) {
+            int index = thread;
+            new Thread(()->{
+            for (int i = 0; i < 10; i++) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                String value = cache1.get("username", key -> null);
+                System.out.println("thread=" + index + "  i=" + i + ":" + value);
+            } }
+            ).start();
+        }
         for (int i = 0; i < 10; i++) {
             Thread.sleep(2000);
             String value = cache1.get("username", key -> null);
