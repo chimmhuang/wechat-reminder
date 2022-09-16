@@ -43,6 +43,110 @@ public class SendTemplateMsgDTO {
      */
     private String client_msg_id;
 
+    private SendTemplateMsgDTO(Builder builder) {
+        setTouser(builder.touser);
+        setTemplate_id(builder.template_id);
+        setUrl(builder.url);
+        setMiniprogram(builder.miniprogram);
+        setData(builder.data);
+        setClient_msg_id(builder.client_msg_id);
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Miniprogram {
+        /**
+         * 所需跳转到的小程序appid（该小程序 appid 必须与发模板消息的公众号是绑定关联关系，暂不支持小游戏）
+         * 【必填】
+         */
+        private String appid;
+
+        /**
+         * 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar），要求该小程序已发布，暂不支持小游戏
+         */
+        private String pagepath;
+
+        public String getAppid() {
+            return appid;
+        }
+
+        public void setAppid(String appid) {
+            this.appid = appid;
+        }
+
+        public String getPagepath() {
+            return pagepath;
+        }
+
+        public void setPagepath(String pagepath) {
+            this.pagepath = pagepath;
+        }
+    }
+
+    public static class DataValue {
+        /**
+         * 值
+         * 【必填】
+         */
+        private String value;
+
+        /**
+         * 模板内容字体颜色，不填默认为黑色
+         * eg. #173177
+         */
+        private String color;
+
+        private DataValue(Builder builder) {
+            setValue(builder.value);
+            setColor(builder.color);
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public static final class Builder {
+            private String value;
+            private String color;
+
+            private Builder() {
+            }
+
+            public Builder value(String value) {
+                this.value = value;
+                return this;
+            }
+
+            public Builder color(String color) {
+                this.color = color;
+                return this;
+            }
+
+            public DataValue build() {
+                return new DataValue(this);
+            }
+        }
+    }
+
+
     public String getTouser() {
         return touser;
     }
@@ -91,63 +195,49 @@ public class SendTemplateMsgDTO {
         this.client_msg_id = client_msg_id;
     }
 
-    public static class Miniprogram {
-        /**
-         * 所需跳转到的小程序appid（该小程序 appid 必须与发模板消息的公众号是绑定关联关系，暂不支持小游戏）
-         * 【必填】
-         */
-        private String appid;
+    public static final class Builder {
+        private String touser;
+        private String template_id;
+        private String url;
+        private Miniprogram miniprogram;
+        private Map<String, DataValue> data;
+        private String client_msg_id;
 
-        /**
-         * 所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar），要求该小程序已发布，暂不支持小游戏
-         */
-        private String pagepath;
-
-        public String getAppid() {
-            return appid;
+        private Builder() {
         }
 
-        public void setAppid(String appid) {
-            this.appid = appid;
+        public Builder touser(String touser) {
+            this.touser = touser;
+            return this;
         }
 
-        public String getPagepath() {
-            return pagepath;
+        public Builder template_id(String template_id) {
+            this.template_id = template_id;
+            return this;
         }
 
-        public void setPagepath(String pagepath) {
-            this.pagepath = pagepath;
-        }
-    }
-
-    public static class DataValue {
-        /**
-         * 值
-         * 【必填】
-         */
-        private String value;
-
-        /**
-         * 模板内容字体颜色，不填默认为黑色
-         * eg. #173177
-         */
-        private String color;
-
-        public String getValue() {
-            return value;
+        public Builder url(String url) {
+            this.url = url;
+            return this;
         }
 
-        public void setValue(String value) {
-            this.value = value;
+        public Builder miniprogram(Miniprogram miniprogram) {
+            this.miniprogram = miniprogram;
+            return this;
         }
 
-        public String getColor() {
-            return color;
+        public Builder data(Map<String, DataValue> data) {
+            this.data = data;
+            return this;
         }
 
-        public void setColor(String color) {
-            this.color = color;
+        public Builder client_msg_id(String client_msg_id) {
+            this.client_msg_id = client_msg_id;
+            return this;
+        }
+
+        public SendTemplateMsgDTO build() {
+            return new SendTemplateMsgDTO(this);
         }
     }
-
 }

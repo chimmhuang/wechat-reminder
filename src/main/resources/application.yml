@@ -18,5 +18,8 @@ wechat:
   # 获取 access_token 地址
   getAccessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
   # 模版推送地址
-  tmplmsgUrl: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s
-  #
+
+  # 模板
+  template:
+    # 整点报时
+    timer: nxv03ennBrLRKFjsEdOQ5waXMI1KE9o5rxd6PJujBnE

@@ -29,16 +29,17 @@ public class WechatCacheClient {
     /**
      * 设置 access_token 缓存
      */
-    public void setAccessToken(String key, AccessTokenRespDTO accessTokenRespDTO) {
-        wechatTokenCache.put(key, JSONUtil.toJsonStr(accessTokenRespDTO));
+    public void setAccessToken(AccessTokenRespDTO accessTokenRespDTO) {
+        wechatTokenCache.put(ACCESS_TOKEN_KEY, JSONUtil.toJsonStr(accessTokenRespDTO));
+        log.info("已将 access_token 放入缓存");
     }
 
 
     /**
      * 获取 access_token
      */
-    public AccessTokenRespDTO getAccessToken(String key) {
-        String value = wechatTokenCache.getIfPresent(key);
+    public AccessTokenRespDTO getAccessToken() {
+        String value = wechatTokenCache.getIfPresent(ACCESS_TOKEN_KEY);
         if (value == null || "".equals(value)) {
             log.debug("未获取到 access_token");
             return null;

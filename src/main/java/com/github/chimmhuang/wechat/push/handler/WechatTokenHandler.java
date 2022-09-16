@@ -48,7 +48,7 @@ public class WechatTokenHandler {
     @PostConstruct
     public AccessTokenRespDTO getAccessToken() {
         // 从缓存中获取
-        AccessTokenRespDTO accessToken = wechatCacheClient.getAccessToken(WechatCacheClient.ACCESS_TOKEN_KEY);
+        AccessTokenRespDTO accessToken = wechatCacheClient.getAccessToken();
         if (accessToken != null) {
             log.info("从缓存获取到 access_token:{}", JSONUtil.toJsonStr(accessToken));
             return accessToken;
@@ -59,7 +59,7 @@ public class WechatTokenHandler {
         log.info("从微信获取到 access_token:{}", JSONUtil.toJsonStr(accessTokenRespDTO));
 
         // 将其写入缓存
-        wechatCacheClient.setAccessToken(WechatCacheClient.ACCESS_TOKEN_KEY, accessTokenRespDTO);
+        wechatCacheClient.setAccessToken(accessTokenRespDTO);
         return accessTokenRespDTO;
     }
 

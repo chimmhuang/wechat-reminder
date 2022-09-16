@@ -19,18 +19,11 @@ import java.util.concurrent.TimeUnit;
 public class CaffeineCacheConfig {
     private static final Logger log = LoggerFactory.getLogger(CaffeineCacheConfig.class);
 
-    @Lazy
-    public CaffeineCacheConfig(WechatTokenHandler wechatTokenHandler) {
-        this.wechatTokenHandler = wechatTokenHandler;
-    }
-
-    private final WechatTokenHandler wechatTokenHandler;
-
     /**
      * 配置微信 token 缓存本地缓存
      */
     @Bean("wechatTokenCache")
-    public Cache<String, String> wechatTokenCache() {
+    public Cache<String, String> wechatTokenCache(@Lazy WechatTokenHandler wechatTokenHandler) {
         return Caffeine.newBuilder()
                 // 数量上限
                 .maximumSize(1024)
