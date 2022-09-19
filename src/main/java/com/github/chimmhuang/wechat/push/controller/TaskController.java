@@ -71,13 +71,13 @@ public class TaskController {
         // 组装内容
         Map<String, SendTemplateMsgDTO.DataValue> dataMap = new HashMap<>();
         dataMap.put("date", SendTemplateMsgDTO.DataValue.builder().value(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).color("#DC3714").build());
-        SendTemplateMsgDTO msgDTO = SendTemplateMsgDTO.builder()
-                .template_id(timerTemplateId)
-                .data(dataMap)
-                .build();
 
         openIdList.parallelStream().forEach(openId -> {
-            msgDTO.setTouser(openId);
+            SendTemplateMsgDTO msgDTO = SendTemplateMsgDTO.builder()
+                    .touser(openId)
+                    .template_id(timerTemplateId)
+                    .data(dataMap)
+                    .build();
             log.info("开始请求微信公众号推送:openId:{}", openId);
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(tmplmsgUrl, JSONUtil.toJsonStr(msgDTO), String.class);
             log.info("微信公众号推送结束:openId:{},状态码:{},body:{}", openId, responseEntity.getStatusCode().value(), responseEntity.getBody());
