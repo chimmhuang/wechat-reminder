@@ -30,7 +30,7 @@ public class CaffeineCacheConfig {
                 // 微信 token 有限期为 7200 秒
                 .expireAfterWrite(7200, TimeUnit.SECONDS)
                 // 提前 1分钟 刷新 token
-                .refreshAfterWrite(119, TimeUnit.MINUTES)
+                .refreshAfterWrite(7140, TimeUnit.SECONDS)
                 // 记录下缓存的一些统计数据，例如命中率等
                 .recordStats()
                 // 剔除监听
