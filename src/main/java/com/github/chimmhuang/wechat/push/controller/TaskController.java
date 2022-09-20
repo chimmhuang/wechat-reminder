@@ -5,6 +5,7 @@ import com.github.chimmhuang.wechat.push.cache.WechatCacheClient;
 import com.github.chimmhuang.wechat.push.config.WechatProperties;
 import com.github.chimmhuang.wechat.push.dto.AccessTokenRespDTO;
 import com.github.chimmhuang.wechat.push.dto.SendTemplateMsgDTO;
+import com.github.chimmhuang.wechat.push.handler.WechatTokenHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,15 +32,17 @@ import java.util.Map;
 public class TaskController {
     private static final Logger log = LoggerFactory.getLogger(TaskController.class);
 
-    public TaskController(WechatCacheClient wechatCacheClient, WechatProperties wechatProperties, RestTemplate restTemplate) {
+    public TaskController(WechatCacheClient wechatCacheClient, WechatProperties wechatProperties, RestTemplate restTemplate, WechatTokenHandler wechatTokenHandler) {
         this.wechatCacheClient = wechatCacheClient;
         this.wechatProperties = wechatProperties;
         this.restTemplate = restTemplate;
+        this.wechatTokenHandler = wechatTokenHandler;
     }
 
     private final WechatCacheClient wechatCacheClient;
     private final WechatProperties wechatProperties;
     private final RestTemplate restTemplate;
+    private final WechatTokenHandler wechatTokenHandler;
 
     /**
      * 整点报时模板id
@@ -61,8 +64,11 @@ public class TaskController {
         // 获取 access_token
         AccessTokenRespDTO accessToken = wechatCacheClient.getAccessToken();
         if (accessToken == null) {
-            log.error("未获取到 access_token");
-            return;
+            log.info("未从缓存中获取到 access_token");
+            String accessTokenStr = wechatTokenHandler.getAccessToken();
+            // 放入缓存
+            accessToken = JSONUtil.toBean(accessTokenStr, AccessTokenRespDTO.class);
+            wechatCacheClient.setAccessToken(accessToken);
         }
 
         // 获取模板推送地址

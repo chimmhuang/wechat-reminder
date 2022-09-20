@@ -38,7 +38,7 @@ public class CaffeineCacheConfig {
                 // 刷新策略
                 .build(k -> {
                     log.info("开始更新缓存值,key:{}", k);
-                    return wechatTokenHandler.getAccessTokenFromWechat();
+                    return wechatTokenHandler.getAccessToken();
                 });
     }
 }

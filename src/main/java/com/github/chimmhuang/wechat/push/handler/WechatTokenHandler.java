@@ -1,14 +1,9 @@
 package com.github.chimmhuang.wechat.push.handler;
 
-import cn.hutool.json.JSONUtil;
-import com.github.chimmhuang.wechat.push.cache.WechatCacheClient;
-import com.github.chimmhuang.wechat.push.dto.AccessTokenRespDTO;
 import com.github.chimmhuang.wechat.push.exception.WechatTokenException;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -23,15 +18,11 @@ import org.springframework.web.client.RestTemplate;
 public class WechatTokenHandler {
     private static final Logger log = LoggerFactory.getLogger(WechatTokenHandler.class);
 
-    @Lazy
-    public WechatTokenHandler(RestTemplate restTemplate, WechatCacheClient wechatCacheClient) {
+    public WechatTokenHandler(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.wechatCacheClient = wechatCacheClient;
     }
 
     private final RestTemplate restTemplate;
-    private final WechatCacheClient wechatCacheClient;
-
     @Value("${wechat.getAccessTokenUrl}")
     private String getAccessTokenUrl;
 
@@ -45,25 +36,7 @@ public class WechatTokenHandler {
      * 获取 access_token
      * 微信接口文档：<a href="https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_access_token.html">获取Access token</a>
      */
-    @PostConstruct
-    public AccessTokenRespDTO getAccessToken() {
-        // 从缓存中获取
-        AccessTokenRespDTO accessToken = wechatCacheClient.getAccessToken();
-        if (accessToken != null) {
-            log.info("从缓存获取到 access_token:{}", JSONUtil.toJsonStr(accessToken));
-            return accessToken;
-        }
-
-        String body = this.getAccessTokenFromWechat();
-        AccessTokenRespDTO accessTokenRespDTO = JSONUtil.toBean(body, AccessTokenRespDTO.class);
-        log.info("从微信获取到 access_token:{}", JSONUtil.toJsonStr(accessTokenRespDTO));
-
-        // 将其写入缓存
-        wechatCacheClient.setAccessToken(accessTokenRespDTO);
-        return accessTokenRespDTO;
-    }
-
-    public String getAccessTokenFromWechat() {
+    public String getAccessToken() {
         // 完善接口地址
         String uri = String.format(getAccessTokenUrl, appID, appSecret);
         // 调用接口

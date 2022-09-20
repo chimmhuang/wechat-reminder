@@ -1,15 +1,15 @@
-name: wechat-reminder # 工作流程名称，会在网页中进行显示
-
-on:
-  push:  # 为了调试方便，修改代码之后push上去即可以看到效果
-    paths: # 指定只有哪些文件修改了才会触发该工作流程
-      - weather-report/**
-      - .github/workflows/weather-report.yml
-  schedule: # 定时任务
-    - cron: "0/5 * * * *" # 每5分钟执行一次
-
-jobs:
-  weather-report:
-    runs-on: "ubuntu-latest" # 在什么机器上跑
-    steps: # 指定的步骤
-      - run: curl http://server.natappfree.cc:44552/task/template/send
+#name: wechat-reminder # 工作流程名称，会在网页中进行显示
+#
+#on:
+#  push:  # 为了调试方便，修改代码之后push上去即可以看到效果
+#    paths: # 指定只有哪些文件修改了才会触发该工作流程
+#      - weather-report/**
+#      - .github/workflows/weather-report.yml
+#  schedule: # 定时任务
+#    - cron: "0/5 * * * *" # 每5分钟执行一次
+#
+#jobs:
+#  weather-report:
+#    runs-on: "ubuntu-latest" # 在什么机器上跑
+#    steps: # 指定的步骤
+#      - run: curl http://server.natappfree.cc:44552/task/template/send
